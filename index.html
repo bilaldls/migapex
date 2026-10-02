@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>migapex, cadreur aérien</title>
+<meta name="description" content="migapex, cadreur aérien pour la publicité et le cinéma en Nouvelle-Aquitaine. Le plan est écrit avant d'être volé.">
+<meta name="theme-color" content="#0a1316">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230a1316'/%3E%3Cg fill='none' stroke='%237fb3a6' stroke-width='1.6'%3E%3Ccircle cx='16' cy='16' r='4.4'/%3E%3Cpath d='M16 2v6M16 24v6M2 16h6M24 16h6'/%3E%3C/g%3E%3Ccircle cx='16' cy='16' r='1.7' fill='%23e3b878'/%3E%3C/svg%3E">
+<meta property="og:title" content="migapex, cadreur aérien">
+<meta property="og:description" content="Le plan est écrit avant d'être volé. Images aériennes pour la publicité et le cinéma.">
+<meta property="og:type" content="website">
+<!-- DEPLOY STEP : remplacer les deux URL absolues ci-dessous par l'adresse réelle du site -->
+<meta property="og:url" content="https://REMPLACER-AU-DEPLOIEMENT/">
+<meta property="og:image" content="https://REMPLACER-AU-DEPLOIEMENT/assets/hero-ending.jpg">
+<link rel="stylesheet" href="assets/site.css">
+</head>
+<body>
+
+<a class="skip" href="#main">Aller au contenu</a>
+
+<div class="env" aria-hidden="true"><div class="env-glow"></div><div class="env-grain"></div></div>
+
+<nav class="nav" id="nav">
+  <a class="mark" href="#main" aria-label="migapex, retour en haut">
+    <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="16" cy="16" r="4.4"/><path d="M16 3v5.5M16 23.5V29M3 16h5.5M23.5 16H29"/></g><circle cx="16" cy="16" r="1.7" fill="currentColor" class="mark-core"/></svg>
+    <span>migapex</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#travaux">Travaux</a></li>
+    <li><a href="#protocole">Protocole</a></li>
+    <li><a href="#equipement">Équipement</a></li>
+    <li><a href="#reponses">Réponses</a></li>
+  </ul>
+  <a class="btn btn-sm" href="#plan-de-vol">Écrire un plan de vol</a>
+</nav>
+
+<main id="main" tabindex="-1">
+
+  <section class="hero" id="hero">
+    <div class="stage" id="stage">
+
+      <div class="poster" id="poster" aria-hidden="true"></div>
+      <video id="video" preload="none" muted playsinline aria-hidden="true" tabindex="-1"></video>
+      <div class="scrim" aria-hidden="true"></div>
+
+      <svg class="ring" id="ring" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
+        <circle cx="24" cy="24" r="20" fill="none" stroke="currentColor" stroke-width="2.5"
+                stroke-dasharray="126" style="stroke-dashoffset:var(--ld,126)"/>
+      </svg>
+
+      <div class="bands" id="bands">
+        <div class="band b1" data-a="0" data-b="0.16" data-entrance="scatter" data-spread="0.5">
+          <p class="line" data-split="char">Tout se décide au sol.</p>
+        </div>
+        <div class="band b2" data-a="0.20" data-b="0.40" data-entrance="drift">
+          <p class="line" data-split="word">Un beau plan qui ne se monte pas ne sert à rien.</p>
+        </div>
+        <div class="band b3" data-a="0.45" data-b="0.68" data-entrance="grid" data-spread="0.42">
+          <p class="line" data-split="char">Alors le mouvement est écrit avant le décollage.</p>
+        </div>
+        <div class="band b4 settle" data-a="0.74" data-b="1" data-entrance="rise">
+          <p class="settle-name" data-split="word">migapex</p>
+          <p class="settle-sub">Cadreur aérien. Publicité, cinéma, marque.<br>Nouvelle-Aquitaine.</p>
+          <div class="settle-cta">
+            <a class="btn" href="#plan-de-vol">Écrire un plan de vol</a>
+            <a class="btn btn-ghost" href="#travaux">Voir les travaux</a>
+          </div>
+        </div>
+      </div>
+
+      <div class="vf vf-a" id="vf-a" data-a="0.42" data-b="0.62" aria-hidden="true">
+        <div class="vf-frame">
+          <svg class="reticle" viewBox="0 0 100 100" preserveAspectRatio="none" focusable="false"><path d="M2 14V2h12M86 2h12v12M98 86v12H86M14 98H2V86"/></svg>
+          <video class="vf-media" data-src="assets/work-event.mp4" poster="assets/work-event.jpg" muted loop playsinline preload="none"></video>
+          <p class="vf-tele"><span>CH. INTÉRIEURE</span><span>16:9</span><span>27.08.26</span></p>
+        </div>
+      </div>
+
+      <div class="vf vf-b" id="vf-b" data-a="0.60" data-b="0.80" aria-hidden="true">
+        <div class="vf-frame">
+          <svg class="reticle" viewBox="0 0 100 100" preserveAspectRatio="none" focusable="false"><path d="M2 14V2h12M86 2h12v12M98 86v12H86M14 98H2V86"/></svg>
+          <video class="vf-media" data-src="assets/work-vague.mp4" poster="assets/work-vague.jpg" muted loop playsinline preload="none"></video>
+          <p class="vf-tele"><span>RESSAC</span><span>9:16</span><span>2024</span></p>
+        </div>
+      </div>
+
+      <div class="cue" id="cue" aria-hidden="true"><span>Défiler</span><i></i></div>
+    </div>
+
+    <div class="static-hero" id="static-hero">
+      <div class="sh-media" aria-hidden="true"></div>
+      <div class="sh-scrim" aria-hidden="true"></div>
+      <div class="sh-body">
+        <p class="kicker">Nouvelle-Aquitaine</p>
+        <h1 class="sh-title">Le plan est écrit avant d'être volé.</h1>
+        <p class="sh-sub">migapex, cadreur aérien pour la publicité et le cinéma.</p>
+        <a class="btn" href="#plan-de-vol">Écrire un plan de vol</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="rule" aria-hidden="true"><svg viewBox="0 0 1200 40" preserveAspectRatio="none" focusable="false"><path class="coast" d="M0 27C84 27 108 15 176 15c74 0 96 13 168 13 66 0 92-18 158-18 72 0 102 21 174 21 64 0 88-11 152-11 70 0 96 14 166 14 60 0 126-9 206-9"/></svg></div>
+
+  <section class="sec constat" id="constat">
+    <div class="wrap">
+      <p class="kicker"><i>01</i> Le constat</p>
+      <h2 class="big reveal" data-split="word">Le drone n'est pas le problème.</h2>
+      <p class="lede reveal">Des rushes magnifiques qui ne se raccordent avec rien, c'est une journée de tournage perdue et un montage à réécrire. Le problème n'est jamais l'appareil. C'est ce qui a été décidé, ou pas, avant le décollage.</p>
+    </div>
+  </section>
+
+  <section class="sec travaux" id="travaux">
+    <div class="wrap">
+      <header class="sec-head">
+        <p class="kicker"><i>02</i> Les travaux</p>
+        <h2 class="mid reveal" data-split="word">Six plans, six intentions.</h2>
+      </header>
+
+      <p class="todo reveal">À COMPLÉTER : ajouter les noms de projet et de client sur chaque plan, une fois l'accord de diffusion obtenu. Pour l'instant chaque carte ne porte que des informations vérifiables.</p>
+
+      <div class="grid" id="grid">
+
+        <figure class="work w-wide reveal">
+          <div class="vf-frame">
+            <svg class="reticle" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M2 14V2h12M86 2h12v12M98 86v12H86M14 98H2V86"/></svg>
+            <video class="vf-media lazy" data-src="assets/work-event.mp4" poster="assets/work-event.jpg" muted loop playsinline preload="none" aria-label="Descente à la verticale au-dessus d'une cour intérieure en pierre pendant une réception"></video>
+          </div>
+          <figcaption>
+            <h3>Cour intérieure</h3>
+            <p class="note">Descente à la verticale au-dessus d'une réception. Le cadre se resserre sans jamais couper.</p>
+            <dl class="tele"><div><dt>Date</dt><dd>27 août 2026</dd></div><div><dt>Format</dt><dd>16:9</dd></div><div><dt>Mouvement</dt><dd>Descente verticale</dd></div></dl>
+          </figcaption>
+        </figure>
+
+        <figure class="work w-tall reveal">
+          <div class="vf-frame">
+            <svg class="reticle" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M2 14V2h12M86 2h12v12M98 86v12H86M14 98H2V86"/></svg>
+            <video class="vf-media lazy" data-src="assets/work-vague.mp4" poster="assets/work-vague.jpg" muted loop playsinline preload="none" aria-label="Descente au-dessus d'une vague qui déferle dans une eau vert jade"></video>
+          </div>
+          <figcaption>
+            <h3>Ressac</h3>
+            <p class="note">La houle fait le mouvement à la place du drone.</p>
+            <dl class="tele"><div><dt>Date</dt><dd>2024</dd></div><div><dt>Format</dt><dd>9:16</dd></div><div><dt>Mouvement</dt><dd>Descente lente</dd></div></dl>
+          </figcaption>
+        </figure>
+
+        <figure class="work w-tall reveal">
+          <div class="vf-frame">
+            <svg class="reticle" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M2 14V2h12M86 2h12v12M98 86v12H86M14 98H2V86"/></svg>
+            <img class="vf-media" src="assets/work-dune.jpg" width="1080" height="1920" loading="lazy" decoding="async" alt="Vue aérienne de deux personnes assises sur une dune face au coucher de soleil sur l'océan">
+          </div>
+          <figcaption>
+            <h3>Deux silhouettes</h3>
+            <p class="note">Vol bas au-dessus de la dune. Deux personnes suffisent à donner l'échelle du paysage.</p>
+            <dl class="tele"><div><dt>Date</dt><dd>9 août 2024</dd></div><div><dt>Format</dt><dd>9:16</dd></div><div><dt>Focale</dt><dd>24 mm</dd></div></dl>
+          </figcaption>
+        </figure>
+
+        <figure class="work w-tall reveal">
+          <div class="vf-frame">
+            <svg class="reticle" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M2 14V2h12M86 2h12v12M98 86v12H86M14 98H2V86"/></svg>
+            <img class="vf-media" src="assets/work-estran.jpg" width="1080" height="1920" loading="lazy" decoding="async" alt="Vue aérienne d'une plage à marée basse, le sable mouillé reflétant le soleil couchant">
+          </div>
+          <figcaption>
+            <h3>Estran</h3>
+            <p class="note">Le sable mouillé renvoie le ciel. La ligne de dune sert de repère de profondeur.</p>
+            <dl class="tele"><div><dt>Date</dt><dd>9 août 2024</dd></div><div><dt>Format</dt><dd>9:16</dd></div><div><dt>Focale</dt><dd>24 mm</dd></div></dl>
+          </figcaption>
+        </figure>
+
+        <figure class="work w-tall reveal">
+          <div class="vf-frame">
+            <svg class="reticle" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M2 14V2h12M86 2h12v12M98 86v12H86M14 98H2V86"/></svg>
+            <img class="vf-media" src="assets/work-ressac.jpg" width="1080" height="1920" loading="lazy" decoding="async" alt="Vue aérienne du ressac au soleil rasant, l'écume traversée par la lumière dorée">
+          </div>
+          <figcaption>
+            <h3>Rouleaux</h3>
+            <p class="note">Le soleil rasant traverse l'écume et dessine chaque ligne de houle.</p>
+            <dl class="tele"><div><dt>Date</dt><dd>9 août 2024</dd></div><div><dt>Format</dt><dd>9:16</dd></div><div><dt>Focale</dt><dd>24 mm</dd></div></dl>
+          </figcaption>
+        </figure>
+
+        <figure class="work w-wide reveal">
+          <div class="vf-frame">
+            <svg class="reticle" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true" focusable="false"><path d="M2 14V2h12M86 2h12v12M98 86v12H86M14 98H2V86"/></svg>
+            <img class="vf-media" src="assets/work-lineup.jpg" width="1920" height="1080" loading="lazy" decoding="async" alt="Vue aérienne d'un surfeur seul dans une vaste étendue d'océan vert jade">
+          </div>
+          <figcaption>
+            <h3>Line-up</h3>
+            <p class="note">L'échelle est le sujet. Un surfeur seul dans une masse d'eau qui remplit tout le cadre.</p>
+            <dl class="tele"><div><dt>Date</dt><dd>18 juillet 2024</dd></div><div><dt>Format</dt><dd>16:9</dd></div><div><dt>Focale</dt><dd>24 mm</dd></div></dl>
+          </figcaption>
+        </figure>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="sec quote" id="temoignages">
+    <div class="wrap narrow">
+      <p class="kicker"><i>03</i> Retours</p>
+      <p class="todo big-todo reveal">À COMPLÉTER : un retour client réel, avec son accord écrit, et le nom de la personne ou de la structure. Aucun témoignage ne sera écrit à la place d'un client.</p>
+    </div>
+  </section>
+
+  <section class="sec protocole" id="protocole">
+    <div class="wrap">
+      <header class="sec-head">
+        <p class="kicker"><i>04</i> Le protocole</p>
+        <h2 class="mid reveal" data-split="word">Quatre temps, dans cet ordre.</h2>
+        <p class="lede reveal">Maintenez le plan ci-dessous pour voir ce qui est décidé avant le décollage.</p>
+      </header>
+
+      <div class="hold-wrap reveal">
+        <div class="hold" id="hold" role="button" tabindex="0"
+             aria-label="Maintenir pour tracer le plan de vol sur l'image">
+          <img src="assets/hero-ending.jpg" width="1536" height="864" loading="lazy" decoding="async" alt="Image aérienne du soleil couchant sur l'océan, support du tracé de plan de vol">
+          <svg class="plan-draw" viewBox="0 0 160 90" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
+            <path class="p-path" d="M18 74C42 74 52 54 74 46c20-7 38-10 70-12"/>
+            <circle class="p-dot p-a" cx="18" cy="74" r="1.8"/>
+            <circle class="p-dot p-b" cx="144" cy="34" r="1.8"/>
+            <path class="p-box" d="M96 16h46v16H96z"/>
+            <path class="p-tick" d="M18 80v4M74 52v4M144 40v4"/>
+          </svg>
+          <div class="hold-hud" aria-hidden="true">
+            <span class="hud-row"><b>ALT</b><i id="hud-alt">000 m</i></span>
+            <span class="hud-row"><b>CAP</b><i id="hud-cap">000°</i></span>
+            <span class="hud-row"><b>LUM</b><i id="hud-lum">attente</i></span>
+          </div>
+          <div class="hold-ring" aria-hidden="true"><svg viewBox="0 0 48 48" focusable="false"><circle cx="24" cy="24" r="20" fill="none" stroke="currentColor" stroke-width="2.5" stroke-dasharray="126" style="stroke-dashoffset:var(--hd,126)"/></svg><span>Maintenir</span></div>
+        </div>
+      </div>
+
+      <ol class="steps" id="steps">
+        <li class="step">
+          <p class="s-code">01 · Cadrage</p>
+          <h3>L'intention avant le matériel</h3>
+          <p>Ce que les images doivent produire, où elles seront diffusées, dans quel format. Repérage des contraintes du site et des créneaux de lumière.</p>
+          <p class="s-out">Note d'intention et découpage</p>
+        </li>
+        <li class="step">
+          <p class="s-code">02 · Autorisations</p>
+          <h3>Le cadre réglementaire d'abord</h3>
+          <p>Vérification de la zone, demande auprès des autorités quand le site l'exige, information des riverains. Aucun vol n'est engagé tant que le dossier n'est pas en règle.</p>
+          <p class="s-out">Dossier réglementaire complet</p>
+        </li>
+        <li class="step">
+          <p class="s-code">03 · Vol</p>
+          <h3>Les plans clés sont doublés</h3>
+          <p>Checklist avant décollage, contrôle du vent et de la lumière. Un plan raté ne se rattrape pas au montage, donc il se tourne deux fois.</p>
+          <p class="s-out">Rushes sécurisés sur deux supports</p>
+        </li>
+        <li class="step">
+          <p class="s-code">04 · Livraison</p>
+          <h3>Prêt à monter, prêt à diffuser</h3>
+          <p>Dérushage, montage, étalonnage à partir du profil log, puis exports calibrés pour chaque destination.</p>
+          <p class="s-out">Masters et exports</p>
+        </li>
+      </ol>
+
+      <p class="todo reveal">À COMPLÉTER : Jules doit valider ce protocole et y inscrire ses références réglementaires réelles et à jour.</p>
+    </div>
+  </section>
+
+  <section class="sec equipement" id="equipement">
+    <div class="wrap">
+      <header class="sec-head">
+        <p class="kicker"><i>05</i> L'équipement</p>
+        <h2 class="mid reveal" data-split="word">Le parc et les qualifications.</h2>
+      </header>
+      <p class="todo big-todo reveal">À COMPLÉTER : le parc réel de Jules (appareils, capteurs, profils vidéo), ses qualifications de télépilote en cours de validité, son assurance responsabilité civile professionnelle et son enregistrement exploitant. Attention, les scénarios nationaux S1, S2 et S3 ont été remplacés par le cadre européen. Rien ne sera écrit ici à sa place.</p>
+    </div>
+  </section>
+
+  <section class="sec reponses" id="reponses">
+    <div class="wrap narrow">
+      <header class="sec-head">
+        <p class="kicker"><i>06</i> Les réponses</p>
+        <h2 class="mid reveal" data-split="word">Ce qu'on me demande avant de signer.</h2>
+      </header>
+
+      <div class="faq">
+        <details class="qa reveal" open>
+          <summary>Est-ce que les plans vont se monter avec le reste du film ?</summary>
+          <p>C'est la seule question qui compte, et c'est pour elle que le découpage se fait avant le vol. Je travaille à partir de votre storyboard, je double les plans clés, et je livre des raccords qui tiennent au banc de montage et pas seulement à l'écran de contrôle.</p>
+        </details>
+        <details class="qa reveal">
+          <summary>Et s'il fait mauvais le jour du tournage ?</summary>
+          <p>Le vent et la lumière décident, jamais le planning. Une date de repli est fixée au moment du devis, et le créneau retenu est celui dont la fenêtre météo est la plus sûre.</p>
+        </details>
+        <details class="qa reveal">
+          <summary>On a le droit de voler sur ce lieu ?</summary>
+          <p>La zone se vérifie avant de s'engager, et certains sites demandent une autorisation qui prend du temps. Plus vous me donnez la commune tôt, plus la réponse arrive tôt.</p>
+        </details>
+        <details class="qa reveal">
+          <summary>Vous êtes assuré et déclaré ?</summary>
+          <p class="todo inline-todo">À COMPLÉTER : qualifications réelles, assurance et enregistrement exploitant, avec leurs références.</p>
+        </details>
+        <details class="qa reveal">
+          <summary>Sous combien de temps je reçois les images ?</summary>
+          <p class="todo inline-todo">À COMPLÉTER : délai réel de livraison des rushes et du montage étalonné.</p>
+        </details>
+        <details class="qa reveal">
+          <summary>Combien ça coûte ?</summary>
+          <p>Chaque projet est chiffré sur devis. La distance, la durée, la complexité réglementaire et les droits de diffusion font varier le budget. Le devis est gratuit et n'engage à rien.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec plan" id="plan-de-vol">
+    <div class="wrap narrow">
+      <header class="sec-head">
+        <p class="kicker"><i>07</i> Le devis</p>
+        <h2 class="mid reveal" data-split="word">Écrire un plan de vol.</h2>
+        <p class="lede reveal">Cinq champs. Vous recevez un devis chiffré, pas une brochure.</p>
+      </header>
+
+      <form class="form reveal" id="form" novalidate>
+        <div class="f-row">
+          <label for="f-mission">Type de mission</label>
+          <select id="f-mission" name="mission">
+            <option value="Publicité ou film de marque">Publicité ou film de marque</option>
+            <option value="Cinéma ou fiction">Cinéma ou fiction</option>
+            <option value="Événement">Événement</option>
+            <option value="Immobilier ou architecture">Immobilier ou architecture</option>
+            <option value="Autre">Autre</option>
+          </select>
+        </div>
+        <div class="f-row">
+          <label for="f-lieu">Où se déroule le tournage</label>
+          <input id="f-lieu" name="lieu" type="text" autocomplete="off" placeholder="La commune suffit, je vérifie la zone">
+        </div>
+        <div class="f-row">
+          <label for="f-date">Quand</label>
+          <input id="f-date" name="date" type="text" autocomplete="off" placeholder="Une date approximative convient">
+        </div>
+        <div class="f-row">
+          <label for="f-livrable">Ce que vous devez livrer</label>
+          <input id="f-livrable" name="livrable" type="text" autocomplete="off" placeholder="Photo, film monté, rushes bruts, format vertical">
+        </div>
+        <div class="f-row">
+          <label for="f-contact">Votre e-mail</label>
+          <input id="f-contact" name="contact" type="email" autocomplete="email" placeholder="pour vous répondre">
+          <p class="f-err" id="f-err" hidden>Il manque une adresse e-mail valide pour pouvoir vous répondre.</p>
+        </div>
+        <button class="btn btn-lg" type="submit">Déposer le plan de vol</button>
+        <p class="f-note">Votre message ouvre votre logiciel de messagerie avec le récapitulatif déjà rempli. Rien n'est envoyé à un service tiers et rien n'est stocké sur ce site.</p>
+        <p class="todo inline-todo">À COMPLÉTER : l'adresse e-mail réelle de migapex, sans laquelle le formulaire ne peut pas aboutir.</p>
+      </form>
+
+      <div class="f-ok" id="f-ok" hidden>
+        <p class="ok-title">C'est parti.</p>
+        <p>Votre messagerie s'est ouverte avec le récapitulatif. Il ne reste qu'à envoyer.</p>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">
+  <div class="wrap">
+    <div class="foot-top">
+      <a class="mark" href="#main" aria-label="migapex, retour en haut">
+        <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="16" cy="16" r="4.4"/><path d="M16 3v5.5M16 23.5V29M3 16h5.5M23.5 16H29"/></g><circle cx="16" cy="16" r="1.7" fill="currentColor"/></svg>
+        <span>migapex</span>
+      </a>
+      <p class="foot-base">Cadreur aérien. Publicité, cinéma, marque. Nouvelle-Aquitaine.</p>
+    </div>
+    <p class="ai-note">L'animation d'ouverture du site est une image de synthèse. Toutes les photos et toutes les vidéos présentées sont des vols réels de migapex.</p>
+    <p class="todo inline-todo">À COMPLÉTER : mentions légales, raison sociale, SIRET, adresse, hébergeur, et lien vers la politique de confidentialité.</p>
+  </div>
+</footer>
+
+<script src="assets/site.js"></script>
+</body>
+</html>
