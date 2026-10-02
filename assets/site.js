@@ -1,19 +1,29 @@
 (function () {
   'use strict';
 
-  var VIDEO_URL = 'assets/hero-scrub.mp4';
-  var VIDEO_BYTES = 9360160;
-  var POSTER_URL = 'assets/hero-poster.jpg';
+  var VIDEO_URL = 'assets/hero-scrub.mp4?v=2';
+  var VIDEO_BYTES = 6796414;
+  var POSTER_URL = 'assets/hero-poster.jpg?v=2';
+  /* temps (s) où le drone passe sur chaque balise, relevés image par image
+     dans la vidéo : départ, étapes 01 à 04, puis le col (fin de la vidéo) */
+  var STOPS = [0, 2.0, 7.0, 9.6, 11.9, 15.0];
 
-  var hero = document.getElementById('hero');
-  var stage = document.getElementById('stage');
+  var flight = document.getElementById('flight');
   var video = document.getElementById('video');
   var poster = document.getElementById('poster');
   var ring = document.getElementById('ring');
   var cue = document.getElementById('cue');
+  var chip = document.getElementById('chip');
+  var chipN = document.getElementById('chip-n');
+  var chipName = document.getElementById('chip-name');
   var nav = document.getElementById('nav');
+  var route = document.getElementById('route');
+  var routeBase = document.getElementById('route-base');
+  var routeFill = document.getElementById('route-fill');
+  var routeLis = [].slice.call(document.querySelectorAll('#route-stops li'));
   var bandEls = [].slice.call(document.querySelectorAll('.band'));
-  var vfEls = [].slice.call(document.querySelectorAll('.vf'));
+  var legEls = [].slice.call(document.querySelectorAll('[data-leg]'));
+  var stopEls = [].slice.call(document.querySelectorAll('.stop'));
 
   var clamp = function (v, lo, hi) { return v < lo ? lo : v > hi ? hi : v; };
   var smoothstep = function (p, e0, e1) {
@@ -43,47 +53,21 @@
     vis.setAttribute('aria-hidden', 'true');
 
     var words = text.split(' ');
-    var chars = [];
-
     words.forEach(function (word, wi) {
       var w = document.createElement('span');
       w.className = 'w';
-      if (mode === 'char') {
-        for (var i = 0; i < word.length; i++) {
-          var c = document.createElement('span');
-          c.className = 'c';
-          c.textContent = word[i];
-          w.appendChild(c);
-          chars.push(c);
-        }
-      } else {
-        w.textContent = word;
-      }
+      w.textContent = word;
       vis.appendChild(w);
-      /* une vraie espace de texte, pas un bloc : elle se supprime en fin de
-         ligne au lieu de décaler la ligne suivante */
+      /* une vraie espace de texte : elle se supprime en fin de ligne */
       if (wi < words.length - 1) vis.appendChild(document.createTextNode(' '));
     });
     el.appendChild(vis);
 
-    var units = mode === 'char' ? chars : [].slice.call(vis.querySelectorAll('.w'));
+    var units = [].slice.call(vis.querySelectorAll('.w'));
     var n = units.length || 1;
     var sp = spread || 0.5;
-
     units.forEach(function (u, i) {
-      var th;
-      if (entrance === 'scatter') {
-        th = r() * sp;
-        u.style.setProperty('--jx', (r() * 64 - 32).toFixed(1) + 'px');
-        u.style.setProperty('--jy', (r() * 52 - 26).toFixed(1) + 'px');
-        u.style.setProperty('--jr', (r() * 26 - 13).toFixed(1) + 'deg');
-      } else if (entrance === 'grid') {
-        th = (i / n) * sp + r() * 0.06;
-        u.style.setProperty('--jx', (-14 - r() * 22).toFixed(1) + 'px');
-      } else {
-        th = (i / n) * sp + r() * 0.05;
-      }
-      u.style.setProperty('--th', th.toFixed(3));
+      u.style.setProperty('--th', ((i / n) * sp + r() * 0.05).toFixed(3));
     });
   }
 
@@ -96,22 +80,98 @@
     band._a = parseFloat(band.getAttribute('data-a'));
     band._b = parseFloat(band.getAttribute('data-b'));
     var ramp = parseFloat(band.getAttribute('data-ramp'));
-    band._ramp = ramp || Math.min(0.025, (band._b - band._a) * 0.35);
+    band._ramp = ramp || Math.min(0.06, (band._b - band._a) * 0.35);
     band._op = -1;
     band._k = -1;
   });
 
-  vfEls.forEach(function (vf) {
-    vf._a = parseFloat(vf.getAttribute('data-a'));
-    vf._b = parseFloat(vf.getAttribute('data-b'));
-    vf._op = -1;
-    vf._media = vf.querySelector('.vf-media');
-    vf._playing = false;
-    vf._loaded = false;
-  });
-
   [].slice.call(document.querySelectorAll('.reveal[data-split], .big[data-split], .mid[data-split]'))
     .forEach(function (el) { split(el, el.getAttribute('data-split'), 'rise', 0.5); });
+
+  /* ------------------------------------------------------------------ */
+  /* géométrie des tronçons, recalculée au redimensionnement             */
+  /* ------------------------------------------------------------------ */
+
+  /* hauteur d'écran (depuis le haut) où se trouve le haut de l'étape quand le drone se pose */
+  var ARRIVE = 0.62;
+  var legs = [];
+  function measure() {
+    var vh = window.innerHeight;
+    legs = legEls.map(function (el, i) {
+      var top = el.getBoundingClientRect().top + window.scrollY;
+      var h = el.offsetHeight;
+      /* le tronçon avance quand il traverse le milieu de l'écran : le drone se
+         pose sur la balise au moment où l'étape suivante entre par le milieu */
+      return {
+        el: el, i: i,
+        start: Math.max(0, top - vh * ARRIVE),
+        end: Math.max(1, top + h - vh * ARRIVE),
+        t0: STOPS[i], t1: STOPS[i + 1],
+        n: el.getAttribute('data-n'), name: el.getAttribute('data-name')
+      };
+    });
+    layoutRoute();
+  }
+
+  /* position sur le parcours : 0 au départ, k au moment où l'étape k est atteinte */
+  function routePos(y) {
+    var pos = 0;
+    for (var i = 0; i < legs.length; i++) {
+      var L = legs[i];
+      if (y < L.start) return { pos: pos, leg: -1, q: 0 };
+      if (y <= L.end) {
+        var q = (y - L.start) / (L.end - L.start);
+        return { pos: i + q, leg: i, q: q };
+      }
+      pos = i + 1;
+    }
+    return { pos: pos, leg: -1, q: 0 };
+  }
+
+  /* temps vidéo pour une position : un léger freinage à l'approche de chaque balise */
+  function timeAt(pos) {
+    var i = Math.min(Math.floor(pos), STOPS.length - 2);
+    var q = clamp(pos - i, 0, 1);
+    var e = 0.45 * q + 0.55 * (q * q * (3 - 2 * q));
+    var t1 = i === STOPS.length - 2 && video.duration ? video.duration - 0.04 : STOPS[i + 1];
+    return STOPS[i] + (t1 - STOPS[i]) * e;
+  }
+
+  /* ------------------------------------------------------------------ */
+  /* le tracé : rail de route                                            */
+  /* ------------------------------------------------------------------ */
+
+  var routeLen = 0;
+  function layoutRoute() {
+    if (!route || !routeBase || !route.offsetHeight) return;
+    var w = route.offsetWidth, h = route.offsetHeight;
+    routeLen = routeBase.getTotalLength();
+    var n = routeLis.length;
+    routeLis.forEach(function (li, k) {
+      var pt = routeBase.getPointAtLength(routeLen * (k + 1) / n);
+      li.style.setProperty('--x', (pt.x * w / 40).toFixed(1) + 'px');
+      li.style.setProperty('--y', (pt.y * h / 400).toFixed(1) + 'px');
+    });
+  }
+
+  var lastFill = -1, lastOn = -1, lastHere = -2;
+  function updateRoute(pos) {
+    var n = routeLis.length;
+    var frac = clamp(pos / n, 0, 1);
+    if (Math.abs(frac - lastFill) > 0.002) {
+      lastFill = frac;
+      routeFill.style.strokeDashoffset = (1 - frac).toFixed(4);
+    }
+    var on = Math.floor(pos + 0.02);
+    var here = Math.abs(pos - Math.round(pos)) < 0.02 && Math.round(pos) >= 1 ? Math.round(pos) : -1;
+    if (on !== lastOn || here !== lastHere) {
+      lastOn = on; lastHere = here;
+      routeLis.forEach(function (li, k) {
+        li.classList.toggle('on', k + 1 <= on);
+        li.classList.toggle('here', k + 1 === here);
+      });
+    }
+  }
 
   /* ------------------------------------------------------------------ */
   /* chargement de la vidéo en flux, derrière l'anneau                   */
@@ -122,14 +182,14 @@
 
   function failVideo() {
     if (ring) ring.style.opacity = '0';
-    stage.classList.add('video-failed');
+    flight.classList.add('video-failed');
   }
 
   function loadHeroBlob() {
     var ctrl = new AbortController();
     var watchdog = setTimeout(function () { ctrl.abort(); }, 20000);
 
-    return fetch(VIDEO_URL, { signal: ctrl.signal }).then(function (res) {
+    return fetch(VIDEO_URL, { signal: ctrl.signal, priority: 'low' }).then(function (res) {
       if (!res.ok || !res.body) throw new Error('http ' + res.status);
       var total = Number(res.headers.get('Content-Length')) || VIDEO_BYTES;
       var reader = res.body.getReader();
@@ -159,8 +219,8 @@
         video.src = URL.createObjectURL(new Blob(chunks, { type: 'video/mp4' }));
         video.load();
         video.addEventListener('canplay', function () {
-          requestSeek(heroProgress() * video.duration);
-          stage.classList.add('video-ready');
+          requestSeek(timeAt(routePos(shownY).pos));
+          flight.classList.add('video-ready');
         }, { once: true });
       });
     });
@@ -195,11 +255,14 @@
 
   var seekBusy = false;
   var pendingTime = null;
+  var lastSeek = -1;
 
   function requestSeek(t) {
     if (!video.duration || !isFinite(video.duration)) return;
+    if (Math.abs(t - lastSeek) < 0.004) return;
     if (seekBusy) { pendingTime = t; return; }
     seekBusy = true;
+    lastSeek = t;
     try { video.currentTime = t; } catch (e) { seekBusy = false; }
   }
 
@@ -216,103 +279,92 @@
   /* boucle de lecture, au repos dès convergence                         */
   /* ------------------------------------------------------------------ */
 
-  var target = 0, shown = 0, rafId = null, lastTick = 0;
-  var heroOnScreen = true;
+  var targetY = 0, shownY = 0, rafId = null, lastTick = 0;
   var loadK = 0, loadStart = 0;
-
-  function heroProgress() {
-    var total = hero.offsetHeight - window.innerHeight;
-    if (total <= 0) return 0;
-    return clamp(-hero.getBoundingClientRect().top / total, 0, 1);
-  }
 
   function tick(now) {
     var dt = Math.min(100, now - (lastTick || now));
     lastTick = now;
-    var k = 0.16;
-    shown += (target - shown) * (1 - Math.pow(1 - k, dt / 16.667));
+    var k = 0.14;
+    shownY += (targetY - shownY) * (1 - Math.pow(1 - k, dt / 16.667));
 
     if (loadK < 1) {
       if (!loadStart) loadStart = now;
-      loadK = clamp((now - loadStart) / 1100, 0, 1);
+      loadK = clamp((now - loadStart) / 1200, 0, 1);
     }
 
-    var converged = Math.abs(target - shown) < 0.0005 && loadK >= 1;
-    if (converged) { shown = target; rafId = null; lastTick = 0; }
+    var converged = Math.abs(targetY - shownY) < 0.5 && loadK >= 1;
+    if (converged) { shownY = targetY; rafId = null; lastTick = 0; }
     else { rafId = requestAnimationFrame(tick); }
 
-    if (video.duration) requestSeek(shown * video.duration);
-    updateCaptions(shown);
+    render(shownY);
   }
 
   function kick() {
-    if (rafId === null && heroOnScreen && scrubOn) {
+    if (rafId === null && scrubOn) {
       lastTick = 0;
       rafId = requestAnimationFrame(tick);
     }
   }
 
   function onScroll() {
-    target = heroProgress();
+    targetY = window.scrollY;
     kick();
   }
 
   /* ------------------------------------------------------------------ */
-  /* bandes : opacité, assemblage, panneaux                              */
+  /* rendu : vidéo, bandes d'ouverture, puce de tronçon, tracé           */
   /* ------------------------------------------------------------------ */
 
-  var lastCueGone = null;
+  var lastCueGone = null, lastCo = -1, chipLeg = -1;
 
-  function updateCaptions(p) {
-    var last = bandEls.length - 1;
+  function render(y) {
+    var rp = routePos(y);
+    if (video.duration) requestSeek(timeAt(rp.pos));
 
+    /* bandes du tronçon d'ouverture */
+    var p0 = legs.length ? clamp((y - legs[0].start) / (legs[0].end - legs[0].start), 0, 1) : 0;
     bandEls.forEach(function (band, i) {
       var a = band._a, b = band._b;
-      var f = Math.min(0.02, (b - a) / 3);
-      var easeIn = i === 0 ? 1 : smoothstep(p, a, a + f);
-      var easeOut = i === last ? 1 : 1 - smoothstep(p, b - f, b);
+      var f = Math.min(0.05, (b - a) / 3);
+      var easeIn = i === 0 ? 1 : smoothstep(p0, a, a + f);
+      var easeOut = 1 - smoothstep(p0, b - f, b);
       var op = easeIn * easeOut;
-
-      var k = clamp((p - a) / band._ramp, 0, 1);
+      var k = clamp((p0 - a) / band._ramp, 0, 1);
       if (i === 0) k = Math.max(k, loadK);
 
       if (Math.abs(op - band._op) > 0.004) {
         band._op = op;
         band.style.opacity = op.toFixed(3);
+        band.style.visibility = op < 0.004 ? 'hidden' : '';
       }
       if (Math.abs(k - band._k) > 0.008) {
         band._k = k;
         band.style.setProperty('--k', k.toFixed(3));
-        if (band.classList.contains('settle')) {
-          band.style.setProperty('--ks', clamp((k - 0.5) * 2.6, 0, 1).toFixed(3));
-          band.style.setProperty('--kb', clamp((k - 0.68) * 3.2, 0, 1).toFixed(3));
-        }
+        band.style.setProperty('--ks', clamp((k - 0.5) * 2.6, 0, 1).toFixed(3));
+        band.style.setProperty('--kb', clamp((k - 0.68) * 3.2, 0, 1).toFixed(3));
       }
     });
 
-    vfEls.forEach(function (vf) {
-      var a = vf._a, b = vf._b;
-      var f = Math.min(0.03, (b - a) / 3);
-      var op = smoothstep(p, a, a + f) * (1 - smoothstep(p, b - f, b));
-
-      if (Math.abs(op - vf._op) > 0.004) {
-        vf._op = op;
-        vf.style.opacity = op.toFixed(3);
-        vf.style.setProperty('--rk', clamp(op * 1.3, 0, 1).toFixed(3));
-        var m = vf._media;
-        if (m) {
-          if (op > 0.02) {
-            if (!vf._loaded) { vf._loaded = true; m.src = m.getAttribute('data-src'); }
-            if (!vf._playing) { vf._playing = true; var q = m.play(); if (q && q.catch) q.catch(function () {}); }
-          } else if (vf._playing) {
-            vf._playing = false;
-            m.pause();
-          }
-        }
+    /* puce « vers l'étape » pendant les tronçons 1 à 4 */
+    var co = 0;
+    if (rp.leg >= 1) {
+      co = smoothstep(rp.q, 0.04, 0.16) * (1 - smoothstep(rp.q, 0.8, 0.93));
+      if (rp.leg !== chipLeg) {
+        chipLeg = rp.leg;
+        var L = legs[rp.leg];
+        chipN.textContent = "Vers l'étape " + L.n;
+        chipName.textContent = L.name;
       }
-    });
+    }
+    if (Math.abs(co - lastCo) > 0.01) {
+      lastCo = co;
+      chip.style.setProperty('--co', co.toFixed(3));
+    }
 
-    var gone = p > 0.03;
+    updateRoute(rp.pos);
+
+    var gone = y > 40;
     if (gone !== lastCueGone) {
       lastCueGone = gone;
       cue.classList.toggle('gone', gone);
@@ -336,22 +388,26 @@
   function enableScrub() {
     if (scrubOn) return;
     scrubOn = true;
+    document.body.classList.add('scrub');
     initHeroOnce();
     addEventListener('scroll', onScroll, { passive: true });
     bandEls.forEach(function (b) { b._op = -1; b._k = -1; });
-    vfEls.forEach(function (v) { v._op = -1; });
-    lastCueGone = null;
+    lastCueGone = null; lastCo = -1; lastFill = -1; lastOn = -1; lastHere = -2; chipLeg = -1;
     unpinFinalStates();
-    updateCaptions(heroProgress());
-    onScroll();
+    measure();
+    targetY = shownY = window.scrollY;
+    render(shownY);
+    kick();
+    updateNav();
   }
 
   function disableScrub() {
     if (!scrubOn) return;
     scrubOn = false;
+    document.body.classList.remove('scrub');
     removeEventListener('scroll', onScroll);
     if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
-    vfEls.forEach(function (v) { if (v._playing) { v._playing = false; v._media.pause(); } });
+    updateNav();
   }
 
   function applyHeroMode() {
@@ -360,24 +416,37 @@
   }
   MQLS.forEach(function (m) { m.addEventListener('change', applyHeroMode); });
 
-  if (hero && stage) {
-    new IntersectionObserver(function (entries) {
-      heroOnScreen = entries[0].isIntersecting;
-      document.body.classList.toggle('hero-off', !heroOnScreen);
-      if (heroOnScreen) kick();
-      else if (rafId !== null) { cancelAnimationFrame(rafId); rafId = null; }
-    }, { rootMargin: '10px' }).observe(hero);
+  var resizeT = null;
+  addEventListener('resize', function () {
+    clearTimeout(resizeT);
+    resizeT = setTimeout(function () { if (scrubOn) { measure(); onScroll(); } }, 120);
+  });
+  /* les images de la galerie changent la hauteur des étapes en se chargeant */
+  addEventListener('load', function () { if (scrubOn) { measure(); onScroll(); } });
+  if (window.ResizeObserver) {
+    new ResizeObserver(function () { if (scrubOn) { measure(); onScroll(); } }).observe(document.getElementById('main'));
   }
 
   /* ------------------------------------------------------------------ */
   /* barre de navigation                                                 */
   /* ------------------------------------------------------------------ */
 
+  /* la barre devient pleine sur les étapes, et reste transparente pendant
+     les tronçons pour ne jamais couper le ciel du vol */
   var lastSolid = null;
-  addEventListener('scroll', function () {
-    var solid = scrollY > 48;
+  function updateNav() {
+    var y = scrollY, solid = y > 48;
+    if (scrubOn) {
+      solid = false;
+      for (var i = 0; i < stopEls.length; i++) {
+        var r = stopEls[i].getBoundingClientRect();
+        if (r.top + innerHeight * 0.2 <= 0 && r.bottom > 70) { solid = true; break; }
+      }
+    }
     if (solid !== lastSolid) { lastSolid = solid; nav.classList.toggle('solid', solid); }
-  }, { passive: true });
+  }
+  addEventListener('scroll', updateNav, { passive: true });
+  updateNav();
 
   /* ------------------------------------------------------------------ */
   /* entrées au défilement                                               */
@@ -405,23 +474,6 @@
     });
   }, { threshold: 0.25 });
   [].slice.call(document.querySelectorAll('.vf-media.lazy')).forEach(function (v) { mediaObs.observe(v); });
-
-  /* trait de côte qui se trace */
-  var coastEls = [].slice.call(document.querySelectorAll('.rule'));
-  var coastCache = new WeakMap();
-  function drawCoast() {
-    coastEls.forEach(function (el) {
-      var r = el.getBoundingClientRect();
-      var d = clamp((innerHeight - r.top) / (innerHeight * 0.72), 0, 1);
-      var prev = coastCache.get(el);
-      if (prev === undefined || Math.abs(d - prev) > 0.01) {
-        coastCache.set(el, d);
-        el.style.setProperty('--draw', d.toFixed(3));
-      }
-    });
-  }
-  addEventListener('scroll', drawCoast, { passive: true });
-  drawCoast();
 
   /* ------------------------------------------------------------------ */
   /* le moment tenu : écrire un plan                                     */
@@ -546,17 +598,11 @@
     });
     if (steps) steps.classList.add('lit', 'settled');
     if (hold) { hold.style.setProperty('--h', '1'); hold.classList.add('done'); }
-    coastEls.forEach(function (el) { el.style.setProperty('--draw', '1'); });
   }
 
   function unpinFinalStates() {
     if (hold) { hold.style.removeProperty('--h'); hold.classList.remove('done'); }
     if (steps) steps.classList.remove('lit', 'settled');
-    coastEls.forEach(function (el) {
-      el.style.removeProperty('--draw');
-      coastCache.delete(el);
-    });
-    drawCoast();
     /* ce qui est encore sous la fenêtre redevient piloté par le défilement */
     [].slice.call(document.querySelectorAll('.reveal')).forEach(function (el) {
       if (el.getBoundingClientRect().top > innerHeight) {

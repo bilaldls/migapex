@@ -12,8 +12,8 @@
 <meta property="og:type" content="website">
 <!-- DEPLOY STEP : remplacer les deux URL absolues ci-dessous par l'adresse réelle du site -->
 <meta property="og:url" content="https://REMPLACER-AU-DEPLOIEMENT/">
-<meta property="og:image" content="https://REMPLACER-AU-DEPLOIEMENT/assets/hero-ending.jpg">
-<link rel="stylesheet" href="assets/site.css">
+<meta property="og:image" content="https://REMPLACER-AU-DEPLOIEMENT/assets/wp-5.jpg">
+<link rel="stylesheet" href="assets/site.css?v=6">
 </head>
 <body>
 
@@ -21,71 +21,59 @@
 
 <div class="env" aria-hidden="true"><div class="env-glow"></div><div class="env-grain"></div></div>
 
+<div class="flight" id="flight" aria-hidden="true">
+  <div class="poster" id="poster"></div>
+  <video id="video" preload="none" muted playsinline aria-hidden="true" tabindex="-1"></video>
+  <div class="scrim"></div>
+  <svg class="ring" id="ring" viewBox="0 0 48 48" focusable="false">
+    <circle cx="24" cy="24" r="20" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-dasharray="126" style="stroke-dashoffset:var(--ld,126)"/>
+  </svg>
+  <p class="chip" id="chip"><span id="chip-n">Vers l'étape 02</span><b id="chip-name">Les travaux</b></p>
+  <div class="cue" id="cue"><span>Défiler pour voler</span><i></i></div>
+</div>
+
 <nav class="nav" id="nav">
   <a class="mark" href="#main" aria-label="migapex, retour en haut">
     <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="16" cy="16" r="4.4"/><path d="M16 3v5.5M16 23.5V29M3 16h5.5M23.5 16H29"/></g><circle cx="16" cy="16" r="1.7" fill="currentColor" class="mark-core"/></svg>
     <span>migapex</span>
   </a>
   <ul class="nav-links">
-    <li><a href="#travaux">Travaux</a></li>
-    <li><a href="#protocole">Protocole</a></li>
-    <li><a href="#equipement">Équipement</a></li>
-    <li><a href="#reponses">Réponses</a></li>
+    <li><a href="#etape-2">Travaux</a></li>
+    <li><a href="#etape-3">Protocole</a></li>
+    <li><a href="#etape-4">Réponses</a></li>
   </ul>
   <a class="btn btn-sm" href="#plan-de-vol">Écrire un plan de vol</a>
 </nav>
 
+<nav class="route" id="route" aria-label="Étapes du vol">
+  <svg class="route-svg" viewBox="0 0 40 400" preserveAspectRatio="none" aria-hidden="true" focusable="false">
+    <path class="route-base" id="route-base" pathLength="1" d="M20 4C30 46 8 74 18 118S34 186 22 232 6 300 20 340 28 380 20 396"/>
+    <path class="route-fill" id="route-fill" pathLength="1" d="M20 4C30 46 8 74 18 118S34 186 22 232 6 300 20 340 28 380 20 396"/>
+  </svg>
+  <ol class="route-stops" id="route-stops">
+    <li><a href="#etape-1"><i></i><span>01 Le constat</span></a></li>
+    <li><a href="#etape-2"><i></i><span>02 Les travaux</span></a></li>
+    <li><a href="#etape-3"><i></i><span>03 Le protocole</span></a></li>
+    <li><a href="#etape-4"><i></i><span>04 Les réponses</span></a></li>
+    <li><a href="#etape-5"><i></i><span>05 Le devis</span></a></li>
+  </ol>
+</nav>
+
 <main id="main" tabindex="-1">
 
-  <section class="hero" id="hero">
-    <div class="stage" id="stage">
-
-      <div class="poster" id="poster" aria-hidden="true"></div>
-      <video id="video" preload="none" muted playsinline aria-hidden="true" tabindex="-1"></video>
-      <div class="scrim" aria-hidden="true"></div>
-
-      <svg class="ring" id="ring" viewBox="0 0 48 48" aria-hidden="true" focusable="false">
-        <circle cx="24" cy="24" r="20" fill="none" stroke="currentColor" stroke-width="2.5"
-                stroke-dasharray="126" style="stroke-dashoffset:var(--ld,126)"/>
-      </svg>
-
-      <div class="bands" id="bands">
-        <div class="band b1" data-a="0" data-b="0.16" data-entrance="scatter" data-spread="0.5">
-          <p class="line" data-split="char">Tout se décide au sol.</p>
-        </div>
-        <div class="band b2" data-a="0.20" data-b="0.40" data-entrance="drift">
-          <p class="line" data-split="word">Un beau plan qui ne se monte pas ne sert à rien.</p>
-        </div>
-        <div class="band b3" data-a="0.45" data-b="0.68" data-entrance="grid" data-spread="0.42">
-          <p class="line" data-split="char">Alors le mouvement est écrit avant le décollage.</p>
-        </div>
-        <div class="band b4 settle" data-a="0.74" data-b="1" data-entrance="rise">
-          <p class="settle-name" data-split="word">migapex</p>
-          <p class="settle-sub">Cadreur aérien. Publicité, cinéma, marque.<br>Nouvelle-Aquitaine.</p>
-          <div class="settle-cta">
-            <a class="btn" href="#plan-de-vol">Écrire un plan de vol</a>
-            <a class="btn btn-ghost" href="#travaux">Voir les travaux</a>
-          </div>
-        </div>
+  <section class="leg hero" id="hero" data-leg="0">
+    <h1 class="sr">migapex, cadreur aérien. Le plan est écrit avant d'être volé.</h1>
+    <div class="bands" id="bands">
+      <div class="band b1" data-a="0" data-b="0.42" data-entrance="rise">
+        <p class="kicker">migapex · cadreur aérien</p>
+        <p class="line" data-split="word">Le plan est écrit avant d'être volé.</p>
+        <p class="band-sub">Publicité, cinéma, marque. Nouvelle-Aquitaine.</p>
+        <div class="band-cta"><a class="btn" href="#plan-de-vol">Écrire un plan de vol</a></div>
       </div>
-
-      <div class="vf vf-a" id="vf-a" data-a="0.42" data-b="0.62" aria-hidden="true">
-        <div class="vf-frame">
-          <svg class="reticle" viewBox="0 0 100 100" preserveAspectRatio="none" focusable="false"><path d="M2 14V2h12M86 2h12v12M98 86v12H86M14 98H2V86"/></svg>
-          <video class="vf-media" data-src="assets/work-event.mp4" poster="assets/work-event.jpg" muted loop playsinline preload="none"></video>
-          <p class="vf-tele"><span>CH. INTÉRIEURE</span><span>16:9</span><span>27.08.26</span></p>
-        </div>
+      <div class="band b2" data-a="0.50" data-b="0.96" data-entrance="drift">
+        <p class="line" data-split="word">Cette ligne, c'est le plan. Le drone ne fait que la suivre.</p>
       </div>
-
-      <div class="vf vf-b" id="vf-b" data-a="0.60" data-b="0.80" aria-hidden="true">
-        <div class="vf-frame">
-          <svg class="reticle" viewBox="0 0 100 100" preserveAspectRatio="none" focusable="false"><path d="M2 14V2h12M86 2h12v12M98 86v12H86M14 98H2V86"/></svg>
-          <video class="vf-media" data-src="assets/work-vague.mp4" poster="assets/work-vague.jpg" muted loop playsinline preload="none"></video>
-          <p class="vf-tele"><span>RESSAC</span><span>9:16</span><span>2024</span></p>
-        </div>
-      </div>
-
-      <div class="cue" id="cue" aria-hidden="true"><span>Défiler</span><i></i></div>
     </div>
 
     <div class="static-hero" id="static-hero">
@@ -93,28 +81,32 @@
       <div class="sh-scrim" aria-hidden="true"></div>
       <div class="sh-body">
         <p class="kicker">Nouvelle-Aquitaine</p>
-        <h1 class="sh-title">Le plan est écrit avant d'être volé.</h1>
+        <p class="sh-title">Le plan est écrit avant d'être volé.</p>
         <p class="sh-sub">migapex, cadreur aérien pour la publicité et le cinéma.</p>
         <a class="btn" href="#plan-de-vol">Écrire un plan de vol</a>
       </div>
     </div>
   </section>
 
-  <div class="rule" aria-hidden="true"><svg viewBox="0 0 1200 40" preserveAspectRatio="none" focusable="false"><path class="coast" d="M0 27C84 27 108 15 176 15c74 0 96 13 168 13 66 0 92-18 158-18 72 0 102 21 174 21 64 0 88-11 152-11 70 0 96 14 166 14 60 0 126-9 206-9"/></svg></div>
-
+  <div class="stop" id="etape-1" data-stop="1">
+    <p class="wp" aria-hidden="true"><svg viewBox="0 0 20 20" focusable="false"><circle cx="10" cy="10" r="7"/><circle cx="10" cy="10" r="2.4" class="wp-core"/></svg><span>Étape 01 / 05</span><b>Le constat</b></p>
   <section class="sec constat" id="constat">
     <div class="wrap">
-      <p class="kicker"><i>01</i> Le constat</p>
-      <h2 class="big reveal" data-split="word">Le drone n'est pas le problème.</h2>
+            <h2 class="big reveal" data-split="word">Le drone n'est pas le problème.</h2>
       <p class="lede reveal">Des rushes magnifiques qui ne se raccordent avec rien, c'est une journée de tournage perdue et un montage à réécrire. Le problème n'est jamais l'appareil. C'est ce qui a été décidé, ou pas, avant le décollage.</p>
     </div>
   </section>
+  </div>
 
+  <div class="leg" data-leg="1" data-name="Les travaux" data-n="02" aria-hidden="true">
+    <figure class="leg-still"><img src="assets/wp-2.jpg" width="1280" height="720" loading="lazy" decoding="async" alt=""><figcaption><span>Vers l'étape 02</span><b>Les travaux</b></figcaption></figure>
+  </div>
+  <div class="stop" id="etape-2" data-stop="2">
+    <p class="wp" aria-hidden="true"><svg viewBox="0 0 20 20" focusable="false"><circle cx="10" cy="10" r="7"/><circle cx="10" cy="10" r="2.4" class="wp-core"/></svg><span>Étape 02 / 05</span><b>Les travaux</b></p>
   <section class="sec travaux" id="travaux">
     <div class="wrap">
       <header class="sec-head">
-        <p class="kicker"><i>02</i> Les travaux</p>
-        <h2 class="mid reveal" data-split="word">Six plans, six intentions.</h2>
+                <h2 class="mid reveal" data-split="word">Six plans, six intentions.</h2>
       </header>
 
       <p class="todo reveal">À COMPLÉTER : ajouter les noms de projet et de client sur chaque plan, une fois l'accord de diffusion obtenu. Pour l'instant chaque carte ne porte que des informations vérifiables.</p>
@@ -199,29 +191,34 @@
 
   <section class="sec quote" id="temoignages">
     <div class="wrap narrow">
-      <p class="kicker"><i>03</i> Retours</p>
+      <p class="kicker">Retours</p>
       <p class="todo big-todo reveal">À COMPLÉTER : un retour client réel, avec son accord écrit, et le nom de la personne ou de la structure. Aucun témoignage ne sera écrit à la place d'un client.</p>
     </div>
   </section>
+  </div>
 
+  <div class="leg" data-leg="2" data-name="Le protocole" data-n="03" aria-hidden="true">
+    <figure class="leg-still"><img src="assets/wp-3.jpg" width="1280" height="720" loading="lazy" decoding="async" alt=""><figcaption><span>Vers l'étape 03</span><b>Le protocole</b></figcaption></figure>
+  </div>
+  <div class="stop" id="etape-3" data-stop="3">
+    <p class="wp" aria-hidden="true"><svg viewBox="0 0 20 20" focusable="false"><circle cx="10" cy="10" r="7"/><circle cx="10" cy="10" r="2.4" class="wp-core"/></svg><span>Étape 03 / 05</span><b>Le protocole</b></p>
   <section class="sec protocole" id="protocole">
     <div class="wrap">
       <header class="sec-head">
-        <p class="kicker"><i>04</i> Le protocole</p>
-        <h2 class="mid reveal" data-split="word">Quatre temps, dans cet ordre.</h2>
+                <h2 class="mid reveal" data-split="word">Quatre temps, dans cet ordre.</h2>
         <p class="lede reveal">Maintenez le plan ci-dessous pour voir ce qui est décidé avant le décollage.</p>
       </header>
 
       <div class="hold-wrap reveal">
         <div class="hold" id="hold" role="button" tabindex="0"
              aria-label="Maintenir pour tracer le plan de vol sur l'image">
-          <img src="assets/hero-ending.jpg" width="1536" height="864" loading="lazy" decoding="async" alt="Image aérienne du soleil couchant sur l'océan, support du tracé de plan de vol">
+          <img src="assets/wp-3.jpg" width="1280" height="720" loading="lazy" decoding="async" alt="Vallée des Pyrénées vue du ciel à l'heure dorée, support du tracé de plan de vol">
           <svg class="plan-draw" viewBox="0 0 160 90" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
-            <path class="p-path" d="M18 74C42 74 52 54 74 46c20-7 38-10 70-12"/>
-            <circle class="p-dot p-a" cx="18" cy="74" r="1.8"/>
-            <circle class="p-dot p-b" cx="144" cy="34" r="1.8"/>
-            <path class="p-box" d="M96 16h46v16H96z"/>
-            <path class="p-tick" d="M18 80v4M74 52v4M144 40v4"/>
+            <path class="p-path" pathLength="1" d="M80 90V72.9C80.2 66 82.5 59 85.6 53.1C86.2 51 84.5 48.6 81.5 46.5C80.6 45.6 81 43.2 83.5 42.8L87.5 42.6C90.5 42.2 91.2 40.6 88.1 39.6L85 39"/>
+            <circle class="p-dot p-a" cx="80" cy="78.2" r="1"/>
+            <circle class="p-dot p-b" cx="85" cy="39" r="1"/>
+            <path class="p-box" pathLength="1" d="M73 9h14v11.5H73z"/>
+            <path class="p-tick" d="M68 78.2h-3M88.5 53h3M93.5 41.3h3"/>
           </svg>
           <div class="hold-hud" aria-hidden="true">
             <span class="hud-row"><b>ALT</b><i id="hud-alt">000 m</i></span>
@@ -266,18 +263,23 @@
   <section class="sec equipement" id="equipement">
     <div class="wrap">
       <header class="sec-head">
-        <p class="kicker"><i>05</i> L'équipement</p>
+        <p class="kicker">L'équipement</p>
         <h2 class="mid reveal" data-split="word">Le parc et les qualifications.</h2>
       </header>
       <p class="todo big-todo reveal">À COMPLÉTER : le parc réel de Jules (appareils, capteurs, profils vidéo), ses qualifications de télépilote en cours de validité, son assurance responsabilité civile professionnelle et son enregistrement exploitant. Attention, les scénarios nationaux S1, S2 et S3 ont été remplacés par le cadre européen. Rien ne sera écrit ici à sa place.</p>
     </div>
   </section>
+  </div>
 
+  <div class="leg" data-leg="3" data-name="Les réponses" data-n="04" aria-hidden="true">
+    <figure class="leg-still"><img src="assets/wp-4.jpg" width="1280" height="720" loading="lazy" decoding="async" alt=""><figcaption><span>Vers l'étape 04</span><b>Les réponses</b></figcaption></figure>
+  </div>
+  <div class="stop" id="etape-4" data-stop="4">
+    <p class="wp" aria-hidden="true"><svg viewBox="0 0 20 20" focusable="false"><circle cx="10" cy="10" r="7"/><circle cx="10" cy="10" r="2.4" class="wp-core"/></svg><span>Étape 04 / 05</span><b>Les réponses</b></p>
   <section class="sec reponses" id="reponses">
     <div class="wrap narrow">
       <header class="sec-head">
-        <p class="kicker"><i>06</i> Les réponses</p>
-        <h2 class="mid reveal" data-split="word">Ce qu'on me demande avant de signer.</h2>
+                <h2 class="mid reveal" data-split="word">Ce qu'on me demande avant de signer.</h2>
       </header>
 
       <div class="faq">
@@ -308,12 +310,17 @@
       </div>
     </div>
   </section>
+  </div>
 
+  <div class="leg" data-leg="4" data-name="Le devis" data-n="05" aria-hidden="true">
+    <figure class="leg-still"><img src="assets/wp-5.jpg" width="1280" height="720" loading="lazy" decoding="async" alt=""><figcaption><span>Vers l'étape 05</span><b>Le devis</b></figcaption></figure>
+  </div>
+  <div class="stop stop-final" id="etape-5" data-stop="5">
+    <p class="wp" aria-hidden="true"><svg viewBox="0 0 20 20" focusable="false"><circle cx="10" cy="10" r="7"/><circle cx="10" cy="10" r="2.4" class="wp-core"/></svg><span>Étape 05 / 05</span><b>Le col, le devis</b></p>
   <section class="sec plan" id="plan-de-vol">
     <div class="wrap narrow">
       <header class="sec-head">
-        <p class="kicker"><i>07</i> Le devis</p>
-        <h2 class="mid reveal" data-split="word">Écrire un plan de vol.</h2>
+                <h2 class="mid reveal" data-split="word">Écrire un plan de vol.</h2>
         <p class="lede reveal">Cinq champs. Vous recevez un devis chiffré, pas une brochure.</p>
       </header>
 
@@ -357,22 +364,23 @@
     </div>
   </section>
 
+  <footer class="foot">
+    <div class="wrap">
+      <div class="foot-top">
+        <a class="mark" href="#main" aria-label="migapex, retour en haut">
+          <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="16" cy="16" r="4.4"/><path d="M16 3v5.5M16 23.5V29M3 16h5.5M23.5 16H29"/></g><circle cx="16" cy="16" r="1.7" fill="currentColor"/></svg>
+          <span>migapex</span>
+        </a>
+        <p class="foot-base">Cadreur aérien. Publicité, cinéma, marque. Nouvelle-Aquitaine.</p>
+      </div>
+      <p class="ai-note">Le vol à travers les Pyrénées qui accompagne la page est une image de synthèse. Toutes les photos et toutes les vidéos des travaux sont des vols réels de migapex.</p>
+      <p class="todo inline-todo">À COMPLÉTER : mentions légales, raison sociale, SIRET, adresse, hébergeur, et lien vers la politique de confidentialité.</p>
+    </div>
+  </footer>
+  </div>
+
 </main>
 
-<footer class="foot">
-  <div class="wrap">
-    <div class="foot-top">
-      <a class="mark" href="#main" aria-label="migapex, retour en haut">
-        <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false"><g fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="16" cy="16" r="4.4"/><path d="M16 3v5.5M16 23.5V29M3 16h5.5M23.5 16H29"/></g><circle cx="16" cy="16" r="1.7" fill="currentColor"/></svg>
-        <span>migapex</span>
-      </a>
-      <p class="foot-base">Cadreur aérien. Publicité, cinéma, marque. Nouvelle-Aquitaine.</p>
-    </div>
-    <p class="ai-note">L'animation d'ouverture du site est une image de synthèse. Toutes les photos et toutes les vidéos présentées sont des vols réels de migapex.</p>
-    <p class="todo inline-todo">À COMPLÉTER : mentions légales, raison sociale, SIRET, adresse, hébergeur, et lien vers la politique de confidentialité.</p>
-  </div>
-</footer>
-
-<script src="assets/site.js"></script>
+<script src="assets/site.js?v=5"></script>
 </body>
 </html>
